@@ -3,9 +3,9 @@ package controller_test
 import (
 	"encoding/json"
 	"net/http/httptest"
-	"park/project/2019_2_Premium-Harbor/component"
-	"park/project/2019_2_Premium-Harbor/controller"
-	"park/project/2019_2_Premium-Harbor/test"
+	"premium-harbor/component"
+	"premium-harbor/controller"
+	"premium-harbor/test"
 	"sort"
 	"testing"
 )

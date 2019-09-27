@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/controller"
+	"premium-harbor/controller"
 )
 
 func main() {

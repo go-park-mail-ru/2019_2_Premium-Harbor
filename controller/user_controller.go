@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/component"
-	"park/project/2019_2_Premium-Harbor/storage"
+	"premium-harbor/component"
+	"premium-harbor/storage"
 	"time"
 )
 

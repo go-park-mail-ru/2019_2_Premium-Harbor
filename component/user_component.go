@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"fmt"
 	"github.com/google/uuid"
-	"park/project/2019_2_Premium-Harbor/storage"
+	"premium-harbor/storage"
 )
 
 type UserComponent struct {

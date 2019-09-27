@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/component"
+	"premium-harbor/component"
 )
 
 type CurrencyController struct {

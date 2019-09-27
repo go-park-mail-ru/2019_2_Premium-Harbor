@@ -3,8 +3,8 @@ package controller_test
 import (
 	"encoding/json"
 	"net/http/httptest"
-	"park/project/2019_2_Premium-Harbor/controller"
-	"park/project/2019_2_Premium-Harbor/test"
+	"premium-harbor/controller"
+	"premium-harbor/test"
 	"strings"
 	"testing"
 )
