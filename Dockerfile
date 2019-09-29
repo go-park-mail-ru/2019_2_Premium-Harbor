@@ -18,4 +18,4 @@ ENV HOME /app
 WORKDIR /app
 RUN useradd -m heroku
 USER heroku
-CMD /app/bin/2019_2_Premium-Harbor
+CMD /app/bin/go-getting-started
