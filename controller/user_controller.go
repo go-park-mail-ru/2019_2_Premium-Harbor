@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/component"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/storage"
 	"net/http"
-	"premium-harbor/component"
-	"premium-harbor/storage"
 	"time"
 )
 

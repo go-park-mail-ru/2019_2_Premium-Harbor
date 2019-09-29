@@ -3,8 +3,8 @@ package component
 import (
 	"crypto/md5"
 	"fmt"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/storage"
 	"github.com/google/uuid"
-	"premium-harbor/storage"
 )
 
 type UserComponent struct {

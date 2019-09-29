@@ -2,9 +2,9 @@ package controller_test
 
 import (
 	"encoding/json"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/controller"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/test"
 	"net/http/httptest"
-	"premium-harbor/controller"
-	"premium-harbor/test"
 	"strings"
 	"testing"
 )

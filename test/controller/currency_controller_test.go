@@ -2,10 +2,10 @@ package controller_test
 
 import (
 	"encoding/json"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/component"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/controller"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/test"
 	"net/http/httptest"
-	"premium-harbor/component"
-	"premium-harbor/controller"
-	"premium-harbor/test"
 	"sort"
 	"testing"
 )
