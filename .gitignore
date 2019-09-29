@@ -1,4 +1,2 @@
-.docker_build/
-bin/
 .idea
 .DS_Store

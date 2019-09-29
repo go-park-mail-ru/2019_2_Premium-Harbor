@@ -1,12 +1,6 @@
 {
-  "name": "Start on Heroku: Go",
-  "description": "Go Getting Started Example App",
-  "keywords": [
-    "getting-started",
-    "go",
-    "sample",
-    "example"
-  ],
+  "name": "Premium Harbor",
+  "description": "",
   "website": "http://github.com/go-park-mail-ru/2019_2_Premium-Harbor",
   "repository": "http://github.com/go-park-mail-ru/2019_2_Premium-Harbor"
 }
