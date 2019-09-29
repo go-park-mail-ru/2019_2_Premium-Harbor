@@ -1,1 +1,1 @@
-web: 2019_2_Premium-Harbor
+web: bin/2019_2_Premium-Harbor
