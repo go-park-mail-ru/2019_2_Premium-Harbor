@@ -23,6 +23,10 @@ func (c UserComponent) GetAllUsers() []storage.User {
 	return c.userStorage.GetAll()
 }
 
+func (c UserComponent) GetUserBySessionID(sessionID string) *storage.User {
+	return c.sessions[sessionID]
+}
+
 func (c UserComponent) UpdateUser(id int, password, name string) {
 	passwordHash := c.getPasswordHash(password)
 	c.userStorage.Update(id, passwordHash, name)
@@ -59,7 +63,7 @@ func (c UserComponent) Logout(sessionID string) error {
 }
 
 func (c UserComponent) getPasswordHash(password string) string {
-	return string(md5.New().Sum([]byte(password)))
+	return fmt.Sprintf("%x", md5.Sum([]byte(password)))
 }
 
 func (c UserComponent) getNewSessionID() string {
