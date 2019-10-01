@@ -53,10 +53,21 @@ func TestUserLogin(t *testing.T) {
 		false,
 	)
 	userSuite.ExpectUserLogin(
+		`{"email":"incorrect@mail.ru","password":"incorrect"}`,
+		getErrorResponse("incorrect email"),
+		false,
+	)
+	userSuite.ExpectUserLogin(
 		`{"email":"testik1@mail.ru","password":"ssc-tuatara"}`,
 		getOkResponse(),
 		true,
 	)
+}
+
+func TestUserLogout(t *testing.T) {
+	userSuite.SetTesting(t)
+	userSuite.ExpectUserLogout(getOkResponse())
+	userSuite.ExpectUserLogout(getErrorResponse("no session cookie"))
 }
 
 type UserControllerTestSuite struct {
@@ -66,7 +77,8 @@ type UserControllerTestSuite struct {
 
 func NewUserControllerTestSuite() *UserControllerTestSuite {
 	return &UserControllerTestSuite{
-		userController: controller.NewUserController(),
+		ControllerTestSuite: *test.NewControllerTestSuite(),
+		userController:      controller.NewUserController(),
 	}
 }
 
@@ -99,6 +111,17 @@ func (s UserControllerTestSuite) ExpectUserLogin(requestBody, expectedResponse s
 	if mustHaveSessionCookie {
 		s.TestCookiePresent(controller.SessionIDCookieName)
 	}
+}
+
+func (s UserControllerTestSuite) ExpectUserLogout(expectedResponse string) {
+	s.Request = httptest.NewRequest("POST", controller.ApiV1UserLogoutPath, strings.NewReader(""))
+	for _, cookie := range s.CookiesByName {
+		s.Request.AddCookie(cookie)
+	}
+	s.Response = httptest.NewRecorder()
+	s.userController.HandleUserLogout(s.Response, s.Request)
+	s.TestResponse(expectedResponse)
+	s.TestCookieNotPresent(controller.SessionIDCookieName)
 }
 
 func getOkResponse() string {

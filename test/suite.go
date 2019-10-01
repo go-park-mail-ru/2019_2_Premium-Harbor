@@ -6,12 +6,20 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 )
 
 type ControllerTestSuite struct {
-	T        *testing.T
-	Request  *http.Request
-	Response *httptest.ResponseRecorder
+	T             *testing.T
+	Request       *http.Request
+	Response      *httptest.ResponseRecorder
+	CookiesByName map[string]*http.Cookie
+}
+
+func NewControllerTestSuite() *ControllerTestSuite {
+	return &ControllerTestSuite{
+		CookiesByName: map[string]*http.Cookie{},
+	}
 }
 
 func (s *ControllerTestSuite) SetTesting(t *testing.T) {
@@ -21,6 +29,7 @@ func (s *ControllerTestSuite) SetTesting(t *testing.T) {
 func (s ControllerTestSuite) TestResponse(expectedResponse string) {
 	s.TestResponseStatus()
 	s.TestResponseBody(expectedResponse)
+	s.updateCookies()
 }
 
 func (s ControllerTestSuite) TestResponseBody(expectedResponse string) {
@@ -36,15 +45,15 @@ func (s ControllerTestSuite) TestResponseStatus() {
 	}
 }
 
-func (s ControllerTestSuite) TestCookiePresent(expectedCookieName string) {
-	ok := false
-	for _, cookie := range s.Response.Result().Cookies() {
-		if cookie.Name == expectedCookieName {
-			ok = true
-		}
+func (s ControllerTestSuite) TestCookiePresent(cookieName string) {
+	if _, present := s.CookiesByName[cookieName]; !present {
+		s.T.Errorf("cookie %v not found in response", cookieName)
 	}
-	if !ok {
-		s.T.Errorf("cookie %v not found in response", expectedCookieName)
+}
+
+func (s ControllerTestSuite) TestCookieNotPresent(cookieName string) {
+	if _, present := s.CookiesByName[cookieName]; present {
+		s.T.Errorf("cookie %v must not be present in response", cookieName)
 	}
 }
 
@@ -60,4 +69,16 @@ func (s ControllerTestSuite) GetResponseBody() (map[string]*json.RawMessage, err
 		return nil, err
 	}
 	return responseBody, nil
+}
+
+func (s ControllerTestSuite) updateCookies() {
+	for _, cookie := range s.Response.Result().Cookies() {
+		if cookie.Expires.Before(time.Now()) {
+			if _, ok := s.CookiesByName[cookie.Name]; ok {
+				delete(s.CookiesByName, cookie.Name)
+			}
+		} else {
+			s.CookiesByName[cookie.Name] = cookie
+		}
+	}
 }

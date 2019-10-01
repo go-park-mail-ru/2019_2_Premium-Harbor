@@ -27,7 +27,8 @@ type CurrencyControllerTestSuite struct {
 
 func NewCurrencyControllerTestSuite() *CurrencyControllerTestSuite {
 	return &CurrencyControllerTestSuite{
-		currencyController: controller.NewCurrencyController(),
+		ControllerTestSuite: *test.NewControllerTestSuite(),
+		currencyController:  controller.NewCurrencyController(),
 	}
 }
 
