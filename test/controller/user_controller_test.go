@@ -45,6 +45,11 @@ func TestUserUpdate(t *testing.T) {
 	userSuite.ExpectUserList(`{"status":"ok","body":{"users":[{"id":1,"email":"testik1@mail.ru","name":"New Name"},{"id":2,"email":"testik2@mail.ru","name":"Test The Best 2"}]}}`)
 }
 
+func TestUserLogin(t *testing.T) {
+	userSuite.SetTesting(t)
+	userSuite.ExpectUserLogin(`{"email":"testik1@mail.ru","password":"ssc-tuatara"}`, getOkResponse())
+}
+
 type UserControllerTestSuite struct {
 	test.ControllerTestSuite
 	userController *controller.UserController
@@ -75,6 +80,14 @@ func (s UserControllerTestSuite) ExpectUserUpdate(requestBody, expectedResponse 
 	s.Response = httptest.NewRecorder()
 	s.userController.HandleUserUpdate(s.Response, s.Request)
 	s.TestResponse(expectedResponse)
+}
+
+func (s UserControllerTestSuite) ExpectUserLogin(requestBody, expectedResponse string) {
+	s.Request = httptest.NewRequest("POST", controller.ApiV1UserLoginPath, strings.NewReader(requestBody))
+	s.Response = httptest.NewRecorder()
+	s.userController.HandleUserLogin(s.Response, s.Request)
+	s.TestResponse(expectedResponse)
+	s.TestCookiePresent(controller.SessionIDCookieName)
 }
 
 func getOkResponse() string {

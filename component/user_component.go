@@ -28,7 +28,10 @@ func (c UserComponent) GetUserBySessionID(sessionID string) *storage.User {
 }
 
 func (c UserComponent) UpdateUser(id int, password, name string) {
-	passwordHash := c.getPasswordHash(password)
+	passwordHash := ""
+	if password != "" {
+		passwordHash = c.getPasswordHash(password)
+	}
 	c.userStorage.Update(id, passwordHash, name)
 }
 

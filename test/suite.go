@@ -36,6 +36,18 @@ func (s ControllerTestSuite) TestResponseStatus() {
 	}
 }
 
+func (s ControllerTestSuite) TestCookiePresent(expectedCookieName string) {
+	ok := false
+	for _, cookie := range s.Response.Result().Cookies() {
+		if cookie.Name == expectedCookieName {
+			ok = true
+		}
+	}
+	if !ok {
+		s.T.Errorf("cookie %v not found in response", expectedCookieName)
+	}
+}
+
 func (s ControllerTestSuite) GetResponseBody() (map[string]*json.RawMessage, error) {
 	var response map[string]*json.RawMessage
 	err := json.NewDecoder(s.Response.Body).Decode(&response)
