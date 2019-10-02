@@ -2,10 +2,10 @@ package controller_test
 
 import (
 	"encoding/json"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/component"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/controller"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/test"
 	"net/http/httptest"
-	"park/project/2019_2_Premium-Harbor/component"
-	"park/project/2019_2_Premium-Harbor/controller"
-	"park/project/2019_2_Premium-Harbor/test"
 	"sort"
 	"testing"
 )
@@ -27,7 +27,8 @@ type CurrencyControllerTestSuite struct {
 
 func NewCurrencyControllerTestSuite() *CurrencyControllerTestSuite {
 	return &CurrencyControllerTestSuite{
-		currencyController: controller.NewCurrencyController(),
+		ControllerTestSuite: *test.NewControllerTestSuite(),
+		currencyController:  controller.NewCurrencyController(),
 	}
 }
 

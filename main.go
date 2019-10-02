@@ -1,11 +1,16 @@
 package main
 
 import (
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/controller"
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/controller"
+	"os"
 )
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	r := controller.InitAPIRouter()
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":"+port, r)
 }

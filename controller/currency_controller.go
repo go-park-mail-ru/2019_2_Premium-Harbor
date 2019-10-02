@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/component"
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/component"
 )
 
 type CurrencyController struct {

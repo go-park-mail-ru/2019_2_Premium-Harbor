@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/component"
+	"github.com/go-park-mail-ru/2019_2_Premium-Harbor/storage"
 	"net/http"
-	"park/project/2019_2_Premium-Harbor/component"
-	"park/project/2019_2_Premium-Harbor/storage"
 	"time"
 )
 
@@ -25,7 +25,7 @@ func NewUserController() *UserController {
 	}
 }
 
-type UserToList struct {
+type UserToOutput struct {
 	ID    int    `json:"id"`
 	Email string `json:"email"`
 	Name  string `json:"name"`
@@ -34,22 +34,26 @@ type UserToList struct {
 func (c UserController) HandleUserList(w http.ResponseWriter, r *http.Request) {
 	c.writeCommonHeaders(w)
 	users := c.userComponent.GetAllUsers()
-	usersToList := c.convertUsersForList(users)
+	usersToOutput := c.convertUsersForOutput(users)
 	c.writeOkWithBody(w, map[string]interface{}{
-		"users": usersToList,
+		"users": usersToOutput,
 	})
 }
 
-func (c UserController) convertUsersForList(users []storage.User) []UserToList {
-	usersToList := make([]UserToList, 0, len(users))
+func (c UserController) convertUsersForOutput(users []storage.User) []UserToOutput {
+	usersToOutput := make([]UserToOutput, 0, len(users))
 	for _, user := range users {
-		usersToList = append(usersToList, UserToList{
-			ID:    user.ID,
-			Email: user.Email,
-			Name:  user.Name,
-		})
+		usersToOutput = append(usersToOutput, c.convertUserForOutput(user))
 	}
-	return usersToList
+	return usersToOutput
+}
+
+func (c UserController) convertUserForOutput(user storage.User) UserToOutput {
+	return UserToOutput{
+		ID:    user.ID,
+		Email: user.Email,
+		Name:  user.Name,
+	}
 }
 
 type UserToUpdate struct {
@@ -70,6 +74,23 @@ func (c UserController) HandleUserUpdate(w http.ResponseWriter, r *http.Request)
 	}
 	c.userComponent.UpdateUser(user.ID, user.Password, user.Name)
 	c.writeOk(w)
+}
+
+func (c UserController) HandleUserProfile(w http.ResponseWriter, r *http.Request) {
+	c.writeCommonHeaders(w)
+	sessionIDCookie, err := r.Cookie(SessionIDCookieName)
+	if err != nil {
+		c.writeError(w, fmt.Errorf("no session cookie"))
+		return
+	}
+	currentUser := c.userComponent.GetUserBySessionID(sessionIDCookie.Value)
+	if currentUser == nil {
+		c.writeError(w, fmt.Errorf("invalid session id"))
+		return
+	}
+	c.writeOkWithBody(w, map[string]interface{}{
+		"user": c.convertUserForOutput(*currentUser),
+	})
 }
 
 type UserToRegister struct {
